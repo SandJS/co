@@ -96,7 +96,7 @@ function co(gen) {
     function next(ret) {
       if (ret.done) return resolve(ret.value);
       var value = toPromise.call(ctx, ret.value);
-      if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
+      if (value && isPromise(value)) return value.then(process.domain ? process.domain.bind(onFulfilled) : onFulfilled, process.domain ? process.domain.bind(onRejected) : onRejected);
       return onRejected(new TypeError('You may only yield a function, promise, generator, array, or object, '
         + 'but the following object was passed: "' + String(ret.value) + '"'));
     }
@@ -172,16 +172,18 @@ function objectToPromise(obj){
     if (promise && isPromise(promise)) defer(promise, key);
     else results[key] = obj[key];
   }
-  return Promise.all(promises).then(function () {
+  var fn = function () {
     return results;
-  });
+  };
+  return Promise.all(promises).then(process.domain ? process.domain.bind(fn) : fn);
 
   function defer(promise, key) {
     // predefine the key in the result
     results[key] = undefined;
-    promises.push(promise.then(function (res) {
+    var fn = function (res) {
       results[key] = res;
-    }));
+    };
+    promises.push(promise.then(process.domain ? process.domain.bind(fn) : fn));
   }
 }
 
