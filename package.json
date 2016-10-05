@@ -1,5 +1,5 @@
 {
-  "name": "co",
+  "name": "@sand/co",
   "version": "4.5.2",
   "description": "generator async control flow goodness",
   "keywords": [
