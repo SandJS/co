@@ -10,7 +10,7 @@
   using promises, letting you write non-blocking code in a nice-ish way.
   
 ## Why a Fork
-This is the same pacakage as normal [co](https://github.com/tj/co) yet it has domain support. Node has problems with domains and Promises, that is fixed in this version.
+This is the same package as normal [co](https://github.com/tj/co) yet it has domain support. Node has problems with domains and Promises, that is fixed in this version.
 
 ## Co v4
 
